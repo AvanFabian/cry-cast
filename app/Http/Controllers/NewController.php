@@ -366,15 +366,13 @@ class NewController extends Controller
     public function accuracy()
     {
         $bayeses = DB::table('bayes')->get();
-        $akurasis = DB::table('prediction')->select('date', 'hasil')->get();
+        $akurasis = DB::table('prediction')->get();
         $count = 0;
         $total = DB::table('prediction')->count();
         foreach ($bayeses as $bayes) {
             foreach ($akurasis as $akurasi) {
                 if ($bayes->date == $akurasi->date) {
-                    if (
-                        $bayes->harga == $akurasi->hasil
-                    ) {
+                    if ($bayes->harga == $akurasi->hasil) {
                         $count++;
                     }
                 }
@@ -382,6 +380,34 @@ class NewController extends Controller
         }
         $accuracy = round(($count / $total) * 100, 2);
         return $accuracy;
+
+        // $truePositive = 0;
+        // $falseNegative = 0;
+        // $falsePositive = 0;
+        // $trueNegative = 0;
+
+        // // hitung true positive, false negative, false positive, true negative
+        // foreach ($bayeses as $bayes) {
+        //     foreach ($akurasis as $akurasi) {
+        //         if ($bayes->date == $akurasi->date) {
+        //             if ($bayes->harga == 1) {
+        //                 if ($akurasi->hasil == 1) {
+        //                     $truePositive++;
+        //                 } else {
+        //                     $falseNegative++;
+        //                 }
+        //             } else {
+        //                 if ($akurasi->hasil == 1) {
+        //                     $falsePositive++;
+        //                 } else {
+        //                     $trueNegative++;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // $accuracy = round(($truePositive + $trueNegative) / ($truePositive + $trueNegative + $falsePositive + $falseNegative) * 100, 2);
+        // return $accuracy;
     }
 
     // Recall
@@ -416,6 +442,7 @@ class NewController extends Controller
         // hitung recall
         if ($truePositive + $falseNegative > 0) {
             $recall = round($truePositive / ($truePositive + $falseNegative) * 100, 2);
+            // $recall = $truePositive / ($truePositive + $falseNegative);
         } else {
             echo "else recall 0";
             $recall = 0;
@@ -459,6 +486,7 @@ class NewController extends Controller
         // hitung precision
         if ($truePositive + $falsePositive > 0) {
             $precision = round($truePositive / ($truePositive + $falsePositive) * 100, 2);
+            // $precision = $truePositive / ($truePositive + $falsePositive);
         } else {
             $precision = 0;
         }
@@ -475,6 +503,7 @@ class NewController extends Controller
         $precision = $this->precision();
         if ($recall + $precision > 0) {
             $f1Score = round((2 * $recall * $precision) / ($recall + $precision), 2);
+            // $f1Score = (2 * $recall * $precision) / ($recall + $precision);
         } else {
             $f1Score = 0;
         }
@@ -482,7 +511,6 @@ class NewController extends Controller
 
         return $f1Score;
     }
-
 
     //Masterinput
     public function import(Request $request)
