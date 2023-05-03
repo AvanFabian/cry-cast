@@ -6,15 +6,15 @@ CryCast is a web application for predicting cryptocurrency prices using Simple M
 
 To install CryCast, simply clone the repository or download as a zip.
 ```
-$ git clone https://github.com/yourusername/crycast.git
+$ git clone https://github.com/Alvalens/cry-cast.git
 ```
 ## Usage
 
 To start the application, run the following command in your directory and make sure you have set up a local server on your computer, such as XAMPP or a similar software:
 
-'''
+```
 php artisan serve
-'''
+```
 
 Once the application is running, click the link to navigate to the website.
 
